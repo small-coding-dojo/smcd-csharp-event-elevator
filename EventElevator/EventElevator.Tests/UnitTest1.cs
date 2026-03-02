@@ -18,4 +18,15 @@ public class UnitTest1
         Assert.Equal(typeof(ButtonPressedEvent), lastEvent!.GetType());
         Assert.Equal(targetFloor, lastEvent.TargetFloor);
     }
+
+    // shitty name
+    [Fact]
+    public void Test2()
+    {
+        var controller = new ElevatorController();
+
+        controller.TellCurrentFloor(0);
+        
+        Assert.Equal(0, controller.CurrentFloor);
+    }
 }

@@ -15,4 +15,8 @@ public class ElevatorController
     {
         CurrentFloor = currentFloor;
     }
+
+    public void EvaluateDirection(int targetFloor)
+    {
+    }
 }

@@ -4,8 +4,8 @@ public class EventAggregator
 {
     private readonly List<ElevatorEvent> _events = [];
     private static EventAggregator? _aggregator;
-    private readonly List<Action<ElevatorEvent>> _eventHandlers = [];
-    private readonly List<Action<MoveUpEvent>> _move_up_eventHandlers = [];
+
+    private readonly Dictionary<Type, List<Action<ElevatorEvent>>> _newEventHandlers = new();
 
 
     private EventAggregator()
@@ -16,10 +16,11 @@ public class EventAggregator
     public void Add(ButtonPressedEvent theEvent)
     {
         _events.Add(theEvent);
-        foreach (var handler in _eventHandlers)
+        var handlers = _newEventHandlers.GetValueOrDefault(typeof(ButtonPressedEvent))?? [];
+        foreach (var handler in handlers)
         {
-            // TODO: wenn parameter ButtonPressedEvent, dann ...
             handler(theEvent);
+         
         }
     }
 
@@ -27,25 +28,18 @@ public class EventAggregator
     public void Add(MoveUpEvent theEvent)
     {
         _events.Add(theEvent);
-        foreach (var handler in _eventHandlers)
+        var handlers = _newEventHandlers.GetValueOrDefault(typeof(MoveUpEvent))?? [];
+        foreach (var handler in handlers)
         {
-            handler(theEvent);
+                handler(theEvent);
+         
         }
     }
     
     public void Subscribe<EventType>(Action<ElevatorEvent> eventHandler)
     {
-        
-        // TODO: tech debt: extract subclass needed
-        if (typeof(EventType) == typeof(MoveUpEvent))
-        {
-            _move_up_eventHandlers.Add(eventHandler);
-            _eventHandlers.Add(eventHandler);
-        }
-        else
-        {
-            _eventHandlers.Add(eventHandler);
-        }
+        // TODO: write test for more than one event handler ( and fix )
+        _newEventHandlers.Add(typeof(EventType), [eventHandler]);
     }
 
     public static EventAggregator GetEventAggregator()

@@ -31,8 +31,7 @@ public class EventAggregator
         var handlers = _newEventHandlers.GetValueOrDefault(typeof(MoveUpEvent))?? [];
         foreach (var handler in handlers)
         {
-                handler(theEvent);
-         
+            handler(theEvent);
         }
     }
     

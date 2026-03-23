@@ -35,6 +35,12 @@ public class EventAggregator
     
     public void Subscribe(Type eventType, Action<ButtonPressedEvent> eventHandler)
     {
+        // TODO: tech debt: extract subclass needed
+        switch(eventType)
+        {
+            case new MoveUpEvent().GetType():
+                break;
+        }
         _eventHandlers.Add(eventHandler);
     }
 

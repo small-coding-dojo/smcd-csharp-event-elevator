@@ -18,6 +18,7 @@ public class EventAggregator
         _events.Add(theEvent);
         foreach (var handler in _eventHandlers)
         {
+            // TODO: wenn parameter ButtonPressedEvent, dann ...
             handler(theEvent);
         }
     }

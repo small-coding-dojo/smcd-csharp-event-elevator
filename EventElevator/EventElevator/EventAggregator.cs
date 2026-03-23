@@ -1,5 +1,10 @@
 namespace EventElevator;
 
+public abstract class ElevatorEvent
+{
+    
+}
+
 public class EventAggregator
 {
     private readonly List<ButtonPressedEvent> _events = [];
@@ -33,15 +38,18 @@ public class EventAggregator
         }
     }
     
-    public void Subscribe(Type eventType, Action<ButtonPressedEvent> eventHandler)
+    public void Subscribe<EventType>(Action<ElevatorEvent> eventHandler)
     {
+        
         // TODO: tech debt: extract subclass needed
-        switch(eventType)
+        if (typeof(EventType) == typeof(MoveUpEvent))
         {
-            case new MoveUpEvent().GetType():
-                break;
+            _move_up_eventHandlers.Add(eventHandler);
         }
-        _eventHandlers.Add(eventHandler);
+        else
+        {
+            _eventHandlers.Add(eventHandler);
+        }
     }
 
     public static EventAggregator GetEventAggregator()

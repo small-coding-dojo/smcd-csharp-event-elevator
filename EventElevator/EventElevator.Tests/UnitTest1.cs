@@ -11,9 +11,9 @@ public class UnitTest1
 
         var eventAggregator = EventAggregator.GetEventAggregator();
         var actualTargetFloor = 0;
-        eventAggregator.Subscribe(typeof(ButtonPressedEvent), (theEvent) =>
+        eventAggregator.Subscribe<ButtonPressedEvent>((theEvent) =>
         {
-            actualTargetFloor = theEvent.TargetFloor;
+            actualTargetFloor = ((ButtonPressedEvent) theEvent).TargetFloor;
         });
         var expectedTargetFloor = 5;
         
@@ -43,9 +43,9 @@ public class UnitTest1
         var actualTargetFloor = 0;
         
         // we subscribe to expected event
-        eventAggregator.Subscribe(typeof(MoveUpEvent), (theEvent) =>
+        eventAggregator.Subscribe<MoveUpEvent>((theEvent) =>
         {
-            actualTargetFloor = theEvent.TargetFloor;
+            actualTargetFloor = ((MoveUpEvent)theEvent).TargetFloor;
         });
         var targetFloor = 5;
         var expectedTargetFloor = 5;

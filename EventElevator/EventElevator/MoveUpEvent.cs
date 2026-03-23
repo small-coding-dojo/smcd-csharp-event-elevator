@@ -1,5 +1,6 @@
 ﻿namespace EventElevator;
 
-public class MoveUpEvent
+public class MoveUpEvent : ElevatorEvent
 {
+    public int TargetFloor { get; set; }
 }

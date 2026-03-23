@@ -11,6 +11,7 @@ public class EventAggregator
     {
     }
 
+    // Notify about button press
     public void Add(ButtonPressedEvent theEvent)
     {
         _events.Add(theEvent);
@@ -34,6 +35,7 @@ public class EventAggregator
         return _aggregator;
     }
 
+    //todo: remove me
     public ButtonPressedEvent? LastEvent()
     {
         return _events.LastOrDefault(); 

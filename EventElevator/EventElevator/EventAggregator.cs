@@ -3,8 +3,10 @@ namespace EventElevator;
 public class EventAggregator
 {
     private readonly List<ButtonPressedEvent> _events = [];
+    private readonly List<MoveUpEvent> _move_up_events = [];
     private static EventAggregator? _aggregator;
     private readonly List<Action<ButtonPressedEvent>> _eventHandlers = [];
+    private readonly List<Action<MoveUpEvent>> _move_up_eventHandlers = [];
 
 
     private EventAggregator()
@@ -21,6 +23,16 @@ public class EventAggregator
         }
     }
 
+    // Notify about button press
+    public void Add(MoveUpEvent theEvent)
+    {
+        _move_up_events.Add(theEvent);
+        foreach (var handler in _move_up_eventHandlers)
+        {
+            handler(theEvent);
+        }
+    }
+    
     public void Subscribe(Type eventType, Action<ButtonPressedEvent> eventHandler)
     {
         _eventHandlers.Add(eventHandler);

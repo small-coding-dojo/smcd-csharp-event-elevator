@@ -18,5 +18,8 @@ public class ElevatorController
 
     public void EvaluateDirection(int targetFloor)
     {
+        // Just fire an event that always signals "up"
+        var eventAggregator = EventAggregator.GetEventAggregator();
+        eventAggregator.Add(new MoveUpEvent());
     }
 }

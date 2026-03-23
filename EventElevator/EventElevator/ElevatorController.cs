@@ -20,6 +20,6 @@ public class ElevatorController
     {
         // Just fire an event that always signals "up"
         var eventAggregator = EventAggregator.GetEventAggregator();
-        eventAggregator.Add(new MoveUpEvent(){TargetFloor = 3});
+        eventAggregator.Add(new MoveUpEvent(){TargetFloor = targetFloor});
     }
 }

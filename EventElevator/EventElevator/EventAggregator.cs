@@ -1,16 +1,10 @@
 namespace EventElevator;
 
-public abstract class ElevatorEvent
-{
-    
-}
-
 public class EventAggregator
 {
-    private readonly List<ButtonPressedEvent> _events = [];
-    private readonly List<MoveUpEvent> _move_up_events = [];
+    private readonly List<ElevatorEvent> _events = [];
     private static EventAggregator? _aggregator;
-    private readonly List<Action<ButtonPressedEvent>> _eventHandlers = [];
+    private readonly List<Action<ElevatorEvent>> _eventHandlers = [];
     private readonly List<Action<MoveUpEvent>> _move_up_eventHandlers = [];
 
 
@@ -31,8 +25,8 @@ public class EventAggregator
     // Notify about button press
     public void Add(MoveUpEvent theEvent)
     {
-        _move_up_events.Add(theEvent);
-        foreach (var handler in _move_up_eventHandlers)
+        _events.Add(theEvent);
+        foreach (var handler in _eventHandlers)
         {
             handler(theEvent);
         }
@@ -45,6 +39,7 @@ public class EventAggregator
         if (typeof(EventType) == typeof(MoveUpEvent))
         {
             _move_up_eventHandlers.Add(eventHandler);
+            _eventHandlers.Add(eventHandler);
         }
         else
         {
@@ -59,11 +54,5 @@ public class EventAggregator
             _aggregator = new EventAggregator();
         }
         return _aggregator;
-    }
-
-    //todo: remove me
-    public ButtonPressedEvent? LastEvent()
-    {
-        return _events.LastOrDefault(); 
     }
 }

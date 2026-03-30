@@ -72,6 +72,12 @@ public class UnitTest1
         {
             moveUpTargetFloor = ((MoveUpEvent)theEvent).TargetFloor;
         });
+        
+        eventAggregator.Subscribe<MoveUpEvent>(theEvent =>
+        {
+            moveUpTargetFloor = 42;
+        });
+        
         eventAggregator.Subscribe<ButtonPressedEvent>(theEvent =>
         {
             buttonPressedTargetFloor = ((ButtonPressedEvent)theEvent).TargetFloor;
@@ -83,8 +89,8 @@ public class UnitTest1
         // The Subscribe method always overwrites the event handler for the
         // given event type, instead of adding to it. So only the last event
         // handler is called.  
-        controller.TellCurrentFloor(0);
-        controller.PushFloorButton(5);
+        eventAggregator.Add(new MoveUpEvent(){TargetFloor = 5});
+        eventAggregator.Add(new ButtonPressedEvent(5));
         
         // reihenfolge der events
         // zuordnung der events

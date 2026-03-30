@@ -78,8 +78,13 @@ public class UnitTest1
         });
         
         // act
+        // The test shall ...
+        // ... point us to the error we have in the EventAggregator:
+        // The Subscribe method always overwrites the event handler for the
+        // given event type, instead of adding to it. So only the last event
+        // handler is called.  
         controller.TellCurrentFloor(0);
-        controller.EvaluateDirection(5);
+        controller.PushFloorButton(5);
         
         // reihenfolge der events
         // zuordnung der events

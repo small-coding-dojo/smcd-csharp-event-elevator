@@ -61,42 +61,40 @@ public class UnitTest1
     }
 
     [Fact]
-    public void SubscribeSupportsMultipleEventHandlers_Test()
+    public void SequenceAndNumberOfSubscriptions()
     {
         var controller = new ElevatorController();
         var eventAggregator = EventAggregator.GetEventAggregator();
         var moveUpTargetFloor = -1;
         var buttonPressedTargetFloor = -1;
+        var countReceivedEvents = 0;
+        
         // Subscribe to: MoveUp and ButtonPressed
         eventAggregator.Subscribe<MoveUpEvent>(theEvent =>
         {
             moveUpTargetFloor = ((MoveUpEvent)theEvent).TargetFloor;
+            ++countReceivedEvents;
+            Assert.Equal(1, countReceivedEvents);
         });
         
         eventAggregator.Subscribe<MoveUpEvent>(theEvent =>
         {
             moveUpTargetFloor = 42;
+            ++countReceivedEvents;
+            Assert.Equal(2, countReceivedEvents);
         });
         
         eventAggregator.Subscribe<ButtonPressedEvent>(theEvent =>
         {
             buttonPressedTargetFloor = ((ButtonPressedEvent)theEvent).TargetFloor;
+            ++countReceivedEvents;
+            Assert.Equal(3, countReceivedEvents);
         });
         
         // act
-        // The test shall ...
-        // ... point us to the error we have in the EventAggregator:
-        // The Subscribe method always overwrites the event handler for the
-        // given event type, instead of adding to it. So only the last event
-        // handler is called.  
         eventAggregator.Add(new MoveUpEvent(){TargetFloor = 5});
         eventAggregator.Add(new ButtonPressedEvent(5));
         
-        // reihenfolge der events
-        // zuordnung der events
-        Assert.Equal(moveUpTargetFloor, buttonPressedTargetFloor);
-        Assert.Equal(moveUpTargetFloor, 5);
-        
-        
+        Assert.Equal(3, countReceivedEvents);
     }
 }

@@ -37,8 +37,14 @@ public class EventAggregator
     
     public void Subscribe<EventType>(Action<ElevatorEvent> eventHandler)
     {
-        // TODO: write test for more than one event handler ( and fix )
-        _newEventHandlers.Add(typeof(EventType), [eventHandler]);
+        if (_newEventHandlers.ContainsKey(typeof(EventType)))
+        {
+            _newEventHandlers[typeof(EventType)].Add(eventHandler);
+        }
+        else
+        {
+            _newEventHandlers.Add(typeof(EventType), [eventHandler]);
+        }
     }
 
     public static EventAggregator GetEventAggregator()

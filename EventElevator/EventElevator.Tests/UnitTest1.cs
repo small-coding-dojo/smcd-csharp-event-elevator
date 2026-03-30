@@ -59,4 +59,33 @@ public class UnitTest1
         // Assert we received move up event for target floor 5
         Assert.Equal(expectedTargetFloor, actualTargetFloor);
     }
+
+    [Fact]
+    public void SubscribeSupportsMultipleEventHandlers_Test()
+    {
+        var controller = new ElevatorController();
+        var eventAggregator = EventAggregator.GetEventAggregator();
+        var moveUpTargetFloor = -1;
+        var buttonPressedTargetFloor = -1;
+        // Subscribe to: MoveUp and ButtonPressed
+        eventAggregator.Subscribe<MoveUpEvent>(theEvent =>
+        {
+            moveUpTargetFloor = ((MoveUpEvent)theEvent).TargetFloor;
+        });
+        eventAggregator.Subscribe<ButtonPressedEvent>(theEvent =>
+        {
+            buttonPressedTargetFloor = ((ButtonPressedEvent)theEvent).TargetFloor;
+        });
+        
+        // act
+        controller.TellCurrentFloor(0);
+        controller.EvaluateDirection(5);
+        
+        // reihenfolge der events
+        // zuordnung der events
+        Assert.Equal(moveUpTargetFloor, buttonPressedTargetFloor);
+        Assert.Equal(moveUpTargetFloor, 5);
+        
+        
+    }
 }

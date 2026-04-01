@@ -38,6 +38,10 @@ public class UnitTest1
     [Fact]
     public void Test3()
     {
+        // TODO: Achtung, Concurrency/Singleton Problem:
+        // Tests müssen derzeit sequentiell ausgeführt werden
+        // Weil parallel laufende Tests mehrere EventHandler 
+        // gleichzeitig registrieren können
         var controller = new ElevatorController();
         var eventAggregator = EventAggregator.GetEventAggregator();
         var actualTargetFloor = 0;
@@ -63,7 +67,6 @@ public class UnitTest1
     [Fact]
     public void SequenceAndNumberOfSubscriptions()
     {
-        var controller = new ElevatorController();
         var eventAggregator = EventAggregator.GetEventAggregator();
         var moveUpTargetFloor = -1;
         var buttonPressedTargetFloor = -1;
@@ -74,13 +77,15 @@ public class UnitTest1
         {
             moveUpTargetFloor = ((MoveUpEvent)theEvent).TargetFloor;
             ++countReceivedEvents;
-            Assert.Equal(1, countReceivedEvents);
+            // because "Should be first EventHandler called" 
+            Assert.True(1 == countReceivedEvents);
         });
         
         eventAggregator.Subscribe<MoveUpEvent>(theEvent =>
         {
             moveUpTargetFloor = 42;
             ++countReceivedEvents;
+            // because "Should be second EventHandler called"
             Assert.Equal(2, countReceivedEvents);
         });
         
@@ -88,6 +93,7 @@ public class UnitTest1
         {
             buttonPressedTargetFloor = ((ButtonPressedEvent)theEvent).TargetFloor;
             ++countReceivedEvents;
+            // because "Should be third EventHandler called"
             Assert.Equal(3, countReceivedEvents);
         });
         
